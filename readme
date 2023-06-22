@@ -1,0 +1,27 @@
+SELECT PersonAgeCode,zipcode,ReligiousMagazine,religioncode,Gaming,PersonMaritalStatus,NumberOfPersonsInLivingUnit,Pets,dwellingType,NumberOfAdults,numberofchildren,PersonGender,PoliticalContributor,HomePurchasePriceCode,HomeownerProbabilityModel,LengthofResidenceCode,ethnicgroup,ethniccode,TimeZone,PersonEducation,EstimatedCurrentHomeValueCode,CreditRating,EstimatedIncomeCode,occupationgroup
+    FROM "smallcons"."consumersmall2"
+    WHERE TimeZone IN ('C')
+      AND PersonEducation IN ('A')
+      AND PersonAgeCode IN (1)
+      AND PersonGender IN ('M')
+      AND EstimatedCurrentHomeValueCode IN ('D')
+      AND CreditRating IN ('A')
+      AND EstimatedIncomeCode IN ('A')
+      AND occupationgroup IN ('A')
+      AND ethnicgroup IN ('A')
+      AND ethniccode IN ('D3')
+      AND LengthofResidenceCode IN (7)
+      AND HomeownerProbabilityModel IN ('H')
+      AND HomePurchasePriceCode IN (6)
+      AND PoliticalContributor IN ('D')
+      AND numberofchildren IN ('0')
+      AND NumberOfAdults IN ('6')
+      AND PersonMaritalStatus IN ('A')
+      AND dwellingType IN ('M')
+      AND Pets IN ('Y')
+      AND NumberOfPersonsInLivingUnit IN (5)
+      AND Gaming IN ('Y')
+      AND religioncode IN ('S')
+      AND ReligiousMagazine IN ('Y')
+      AND zipcode = 60644
+    LIMIT 4

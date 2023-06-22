@@ -1,0 +1,23 @@
+/* Style for the form elements */
+textarea, input[type="text"], input[type="number"], button {
+    display: block;
+    width: -webkit-fill-available;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+  }
+  
+  textarea:focus, input[type="text"]:focus, input[type="number"]:focus {
+    outline: none;
+    border-color: #0066CC;
+  }
+  
+  button {
+    background-color: #111110;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }

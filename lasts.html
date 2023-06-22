@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Athena Results</title>
+    <script src="style.css" rel="stylesheet"></script>
+	<meta charset="UTF-8">
+    <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <style>
+    /* Style the form */
+form {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+}
+
+/* Style the form elements */
+label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+textarea, input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+textarea {
+  height: 150px;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  margin-right: 10px;
+}
+
+button[type="button"], button[type="submit"] {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button[type="button"]:hover, button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+
+button[type="button"]:focus, button[type="submit"]:focus {
+  outline: none;
+}
+
+/* Style the results */
+
+
+#results {
+  overflow-x: auto;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #F5F5F5;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Style the page */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f1f1;
+}
+
+ </style>
+</head>
+<body>
+	<div class="home">
+	
+	<h1>LEADS GPT</h1>
+	<div class="mid">
+	<form>
+		<label for="query">Query:</label><br>
+		<textarea id="query" name="query" rows="10" cols="50">SELECT * FROM "website"."connectweb" LIMIT 10;</textarea><br>
+        <div class="first">
+		<label>Select Columns:</label><br>
+		<label for="company">Company</label>
+		<input type="checkbox" id="company" name="filter" value="company">
+		<label for="email">Email</label>
+		<input type="checkbox" id="email" name="filter" value="email">
+		<label for="phone">Phone</label>
+		<input type="checkbox" id="phone" name="filter" value="phone">
+		<label for="first">First</label>
+		<input type="checkbox" id="first" name="filter" value="first">
+        <label for="address">ADDRESS</label>
+		<input type="checkbox" id="address" name="filter" value="address">
+		<label for="city">CITY</label>
+		<input type="checkbox" id="city" name="filter" value="city">
+		<label for="zip">ZIP</label>
+		<input type="checkbox" id="zip" name="filter" value="zip">
+		<label for="gender">GENDER</label>
+		<input type="checkbox" id="gender" name="filter" value="gender"><br>
+        </div>
+        <div class="second">
+		<label>Select Query Type:</label><br>
+		<input type="radio" id="single" name="queryType" value="single" checked>
+		<label for="single">Single Select</label>
+		<input type="radio" id="multiple" name="queryType" value="multiple">
+		<label for="multiple">Multiple Select</label>
+		<input type="radio" id="none" name="queryType" value="none">
+		<label for="none">None</label><br>
+        </div>
+        <div class="all" style="display:none">
+       <label for="where">CONDITION:</label>
+<input type="text" id="where" name="where">
+
+<label for="and">CONDITION TWO:</label>
+<input type="text" id="and" name="and">
+
+<label for="ands">AND:</label>
+<input type="text" id="ands" name="ands">
+
+<label for="like">CATEGORY:</label>
+<input type="text" id="like" name="like">
+</div>
+
+        <div class="s">
+        <label for="limit">Limit:</label>
+        <input type="number" id="limit" name="limit" value="10" min="1" max="100">
+        <button type="button" onclick="increaseLimit()">+</button>
+        <button type="button" onclick="decreaseLimit()">-</button>
+        </div>
+		<button type="button" onclick="runQuery()">Run Query</button>
+	</form>
+	</div>
+	<div id="results"></div>
+	</div>
+
+    
+	
+
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.996.0.min.js"></script>
+	<script>
+        function increaseLimit() {
+    var limitField = document.getElementById('limit');
+    limitField.value = parseInt(limitField.value) + 1;
+}
+
+function decreaseLimit() {
+    var limitField = document.getElementById('limit');
+    limitField.value = parseInt(limitField.value) - 1;
+    if (limitField.value < 1) {
+        limitField.value = 1;
+    }
+}
+
+		// Set up AWS credentials
+		AWS.config.region = 'us-east-1';
+        AWS.config.credentials = new AWS.Credentials('AKIAQ6FXL22LTJRLMI4C', 'T2luxgWfcGvnHB/EizBGFBeRlgJIUQU3tCluwVew');
+		function runQuery() {
+    var queryType = document.querySelector('input[name="queryType"]:checked').value;
+    var selectedFilters = [];
+    if (queryType == 'single') {
+        var limit = document.getElementById('limit').value;
+        var query = 'SELECT ';
+        var filters = document.getElementsByName('filter');
+        for (var i = 0; i < filters.length; i++) {
+            if (filters[i].checked) {
+                selectedFilters.push(filters[i].value);
+            }
+        }
+        if (selectedFilters.length > 0) {
+            query += selectedFilters.join(', ');
+        } else {
+            query += '*';
+        }
+        query += ' FROM "website"."connectweb"';
+
+        // Retrieve user input for WHERE, ADD, and LIKE values
+        var whereValue = document.getElementById('where').value;
+        var andValue = document.getElementById('and').value;
+        var likeValue = document.getElementById('like').value;
+        var andsValue = document.getElementById('ands').value;
+
+        // Add WHERE, ADD, and LIKE clauses to the query string if user input is provided
+        if (whereValue) {
+            query += ' WHERE ' + whereValue;
+        }
+        if (andValue) {
+            query += ' AND ' + andValue;
+        }
+        if (andsValue) {
+            query += ' AND ' + andsValue;
+        }
+        if (likeValue) {
+            query += ' LIKE ' + "'" +'%' + likeValue + '%' + "'";
+        }
+
+        query += ' LIMIT ' + limit + ';';
+    } else if (queryType == 'multiple') {
+        selectedFilters = document.getElementById('query').value.split(',').map(function(item) {
+            return item.trim();
+        });
+        query = 'SELECT ' + selectedFilters.join(', ') + ' FROM "website"."connectweb" LIMIT 10;';
+    } else {
+        query = 'SELECT * FROM "website"."connectweb" LIMIT 10;';
+    }
+
+    document.getElementById('query').value = query;
+    var params = {
+        QueryString: query,
+        ResultConfiguration: {
+            OutputLocation: 's3://consumer-athena/query-output/'
+        }
+    };
+
+            var athena = new AWS.Athena();
+
+            athena.startQueryExecution(params, function(err, data) {
+                if (err) {
+                    console.log(err, err.stack);
+                } else {
+                    checkQueryStatus(data.QueryExecutionId);
+                }
+            });
+        }
+
+        function checkQueryStatus(queryId) {
+            var athena = new AWS.Athena();
+
+            athena.getQueryExecution({ QueryExecutionId: queryId }, function(err, data) {
+                if (err) {
+                    console.log(err, err.stack);
+                } else {
+                    var status = data.QueryExecution.Status.State;
+                    if (status == 'QUEUED' || status == 'RUNNING') {
+                        setTimeout(function() { checkQueryStatus(queryId); }, 5000);
+                    } else if (status == 'SUCCEEDED') {
+                        getQueryResults(queryId);
+                    } else {
+                        window.alert('Query failed: ' + data.QueryExecution.Status.StateChangeReason);
+                    }
+                }
+            });
+        }
+
+        function getQueryResults(queryId) {
+    var athena = new AWS.Athena();
+
+    athena.getQueryResults({ QueryExecutionId: queryId }, function(err, data) {
+        if (err) {
+            console.log(err, err.stack);
+        } else {
+            var results = document.getElementById('results');
+            results.innerHTML = '';
+
+            if (data.ResultSet.Rows.length == 0) {
+                results.innerHTML = '<p>No results found.</p>';
+                return;
+            }
+
+            var table = document.createElement('table');
+
+            // Create table header row
+            var headerRow = document.createElement('tr');
+            data.ResultSet.ResultSetMetadata.ColumnInfo.forEach(function(column) {
+                var headerCell = document.createElement('th');
+                headerCell.appendChild(document.createTextNode(column.Name));
+                headerRow.appendChild(headerCell);
+            });
+            table.appendChild(headerRow);
+
+            // Create table data rows
+            data.ResultSet.Rows.forEach(function(row) {
+                var dataRow = document.createElement('tr');
+                row.Data.forEach(function(cell) {
+                    var dataCell = document.createElement('td');
+                    dataCell.appendChild(document.createTextNode(cell.VarCharValue));
+                    dataRow.appendChild(dataCell);
+                });
+                table.appendChild(dataRow);
+            });
+
+            results.appendChild(table);
+        }
+    });
+}
+
+</script>
+</body>
+</html>
+
+

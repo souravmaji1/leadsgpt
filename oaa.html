@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tax Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.4/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .border-box {
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Tax Calculator</h1>
+        <div class="flex flex-col gap-2 md:flex-row md:gap-4">
+            <div class="flex-1">
+                <label for="income" class="text-lg">Income: $</label>
+                <input type="number" id="income" class="w-full p-2 border border-gray-300 rounded" />
+            </div>
+            <div class="flex-1">
+                <label for="taxRate" class="text-lg">Tax Rate (%):</label>
+                <input type="number" id="taxRate" class="w-full p-2 border border-gray-300 rounded" />
+            </div>
+        </div>
+        <button onclick="calculateTax()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Calculate Tax</button>
+        <div class="mt-4">
+            <label for="result" class="text-lg">Tax Amount: $</label>
+            <input type="number" id="result" class="w-full p-2 border border-gray-300 rounded" disabled />
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Tax Calculator - Calculate Your Taxes Online</h1>
+        <div class="border-box mb-8">
+            <h2 class="text-xl font-semibold mb-4">What is a Tax Calculator?</h2>
+            <p>A tax calculator is an online tool that helps individuals estimate their tax liability based on their income and applicable tax rates. It provides a convenient way to determine the approximate amount of taxes owed without the need for complex manual calculations.</p>
+            <p>Our tax calculator simplifies the process by allowing you to enter your income and tax rate, and it instantly calculates the tax amount you are expected to pay.</p>
+        </div>
+
+        <div class="border-box mb-8">
+            <h2 class="text-xl font-semibold mb-4">Frequently Asked Questions</h2>
+            <div>
+                <h3 class="text-lg font-semibold mb-2">1. How accurate is the tax calculation?</h3>
+                <p>The tax calculator provides an estimation of your tax liability based on the information you provide. However, please note that it is a simplified tool and may not account for all the factors that can affect your actual tax liability, such as deductions, credits, and other tax provisions. It is always advisable to consult a tax professional for a more precise calculation.</p>
+            </div>
+            <div class="mt-4">
+                <h3 class="text-lg font-semibold mb-2">2. Can I use the tax calculator for any country?</h3>
+                <p>Our tax calculator is designed for general use and can be used in any country. However, please keep in mind that tax laws and rates vary between countries, so the results may not be applicable to your specific jurisdiction. It is recommended to verify the tax laws and rates of your country or consult a tax expert for accurate calculations.</p>
+            </div>
+            <div class="mt-4">
+                <h3 class="text-lg font-semibold mb-2">3. Is my personal information saved when using the tax calculator?</h3>
+                <p>No, we do not save any personal information entered into the tax calculator. The calculations are performed on your local device, and the entered data is not transmitted or stored anywhere.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateTax() {
+            var income = parseFloat(document.getElementById("income").value);
+            var taxRate = parseFloat(document.getElementById("taxRate").value);
+
+            var taxAmount = (income * taxRate) / 100;
+
+            document.getElementById("result").value = taxAmount.toFixed(2);
+        }
+    </script>
+</body>
+</html>
